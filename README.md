@@ -22,14 +22,43 @@ Based on PHP_CodeSniffer **CodeIgniter-for-PHP_CodeSniffer** helps to validate m
 
 ## Installation
 
-There is an [Apache Ant](http://ant.apache.org/) script at the root of the repository. It targets standard Linux environment like Ubuntu with PHP_CodeSniffer 1.3.0 or above installed via PEAR. It requires PHP (in its 5th version).
+Add following into your application's composer.json
 
-Just go to the root of the project and type `ant` to set up **CodeIgniter-for-PHP_CodeSniffer**. 
-If you have CodeSniffer installed in another directory than "/usr/share/php/PHP/CodeSniffer/" than you can pass the right directory
-as argument to ant. Just type `ant -Dphpcs.dir="/path/to/CodeSniffer/"`.
+```
+{
+...
+    "repositories": [
+        {
+        "type": "git",
+        "url": "https://github.com/orih/CodeIgniter-for-PHP_CodeSniffer.git"
+        }
+    ]
+...
+}
+```
 
-Check that it is installed type `phpcs -i` you should see a list of installed standards.
+and just type this command at a place which your composer.json exists.
 
-Then you can go to you project folder and run `phpcs --standard=CodeIgniter my-file-or-my-directory.php`.
+```
+$ composer require orih/CodeIgniter-for-PHP_CodeSniffer:dev-master
+```
 
-If you work on a Windows platform or for any reason, it is easy to edit the installation script. You just need to change the property `phpcs.dir` in `build.xml` to point toward the directory containing PHP_CodeSniffer.
+And then configure PHP_CodeSniffer to use CodeIgniter-for-PHP_CodeSniffer.
+
+```
+$ ./vendor/bin/phpcs --configure-set installed_paths $(pwd)/vendor/orih/CodeIgniter-for-PHP_CodeSniffer/
+```
+
+Note that `phpcs` and `vendor` directory locations are depend on your composer comfiguration.
+
+And run
+
+```
+$ ./vendor/bin/phpcs --standard=CodeIgniter ./application
+```
+
+If you don't want to use `config-set` option ahead of sniffing, you can specify it like following wihtout use `config-set`
+
+```
+$ ./vendor/bin/phpcs --standard=$(pwd)/vendor/orih/CodeIgniter-for-PHP_CodeSniffer/CodeIgniter ./application
+```
